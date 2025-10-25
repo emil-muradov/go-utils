@@ -1,8 +1,8 @@
 package semver_compare
 
 import (
-	"fmt"
-	"go-utils/internal"
+	"errors"
+	"strconv"
 	"strings"
 )
 
@@ -14,31 +14,32 @@ const (
 	EQ CompareResult = "EQ"
 )
 
+var (
+	ErrInvalidSemver = errors.New("invalid semver. expected x.y.z")
+)
+
 func CompareSemvers(left, right string) (CompareResult, error) {
-	leftTokens := internal.SliceAtoi(strings.Split(left, "."))
-	rightTokens := internal.SliceAtoi(strings.Split(right, "."))
-	if len(leftTokens) == 1 {
-		return "", fmt.Errorf("invalid semver format. expected: x.y.z, got: %s", left)
+	left = strings.ReplaceAll(left, ".", "")
+	right = strings.ReplaceAll(right, ".", "")
+	for len(left) < len(right) {
+		left = left + "0"
 	}
-	if len(rightTokens) == 1 {
-		return "", fmt.Errorf("invalid semver format. expected: x.y.z, got: %s", right)
+	for len(left) > len(right) {
+		right = right + "0"
 	}
-	n := max(len(leftTokens), len(rightTokens))
-	diff := len(leftTokens) - len(rightTokens)
-	var tmp []int
-	if diff < 0 {
-		tmp = make([]int, -diff)
-		leftTokens = append(leftTokens, tmp...)
-	} else {
-		tmp = make([]int, diff)
-		rightTokens = append(rightTokens, tmp...)
+	l, err := strconv.Atoi(left)
+	if err != nil {
+		return "", ErrInvalidSemver
 	}
-	for i := range n {
-		if leftTokens[i] < rightTokens[i] {
-			return LT, nil
-		} else if leftTokens[i] > rightTokens[i] {
-			return GT, nil
-		}
+	r, err := strconv.Atoi(right)
+	if err != nil {
+		return "", ErrInvalidSemver
+	}
+	if l < r {
+		return LT, nil
+	}
+	if l > r {
+		return GT, nil
 	}
 	return EQ, nil
 }
