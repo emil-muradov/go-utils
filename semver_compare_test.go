@@ -10,10 +10,10 @@ func TestCompareSemvers(t *testing.T) {
 		a, b   string
 		expect CompareResult
 	}{
-		{"1.0.0", "1.1.0", CompareResult("LT")},
-		{"0.1.0", "0.0.1.0", CompareResult("GT")},
-		{"1.1.1", "1.1.1", CompareResult("EQ")},
-		{"1.1.1", "1,2", ""},
+		{"1.0.0", "1.1.0", "LT"},
+		{"0.1.0", "0.0.1.0", "GT"},
+		{"1.1.1", "1.1.1", "EQ"},
+		{"1.1.1", "1,2,3", ""},
 		{"", "0.3", ""},
 	}
 	for _, tt := range tests {
