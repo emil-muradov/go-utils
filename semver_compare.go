@@ -19,6 +19,9 @@ var (
 )
 
 func CompareSemvers(left, right string) (CompareResult, error) {
+	if left == "" || right == "" {
+		return "", ErrInvalidSemver
+	}
 	left = strings.ReplaceAll(left, ".", "")
 	right = strings.ReplaceAll(right, ".", "")
 	for len(left) < len(right) {
