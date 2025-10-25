@@ -15,6 +15,8 @@ func TestCompareSemvers(t *testing.T) {
 		{"1.1.1", "1.1.1", "EQ"},
 		{"1.1.1", "1,2,3", ""},
 		{"", "0.3", ""},
+		{"1.2.3-alpha.1", "1.2.3-alpha.2", "LT"},
+		{"2.0.0-rc.1", "1.7.3", "GT"},
 	}
 	for _, tt := range tests {
 		testName := fmt.Sprintf("%s, %s", tt.a, tt.b)
