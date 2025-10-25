@@ -7,8 +7,8 @@ import (
 
 func TestCompareSemvers(t *testing.T) {
 	tests := []struct {
-		a, b string
-		want CompareResult
+		a, b   string
+		expect CompareResult
 	}{
 		{"1.0.0", "1.1.0", CompareResult("LT")},
 		{"0.1.0", "0.0.1.0", CompareResult("GT")},
@@ -21,10 +21,10 @@ func TestCompareSemvers(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			actual, err := CompareSemvers(tt.a, tt.b)
 			if err != nil {
-				t.Skipf("got error: %v", err)
+				t.Skipf("error: %v", err)
 			}
-			if actual != tt.want {
-				t.Errorf("got %s, want %s", actual, tt.want)
+			if actual != tt.expect {
+				t.Errorf("expect: %s, actual: %s", tt.expect, actual)
 			}
 		})
 	}
