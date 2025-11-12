@@ -1,4 +1,4 @@
-package semver_compare
+package semvercompare
 
 import (
 	"fmt"
